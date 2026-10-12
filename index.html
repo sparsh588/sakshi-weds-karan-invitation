@@ -35,6 +35,22 @@ body{font-family:'Montserrat',sans-serif;background:#2a0a12;color:var(--ivory);o
 #envelope-screen{position:fixed;inset:0;z-index:20;display:flex;flex-direction:column;align-items:center;justify-content:center;
   transition:opacity 1s ease,transform 1s ease}
 #envelope-screen.hide{opacity:0;transform:scale(1.15);pointer-events:none}
+
+/* Auspicious Red Ganesha Idol - Positioned cleanly inside dome */
+.ganesh-top{
+  position:relative;
+  width:clamp(42px,10vw,56px);
+  height:clamp(42px,10vw,56px);
+  margin-bottom:0.25rem;
+  transform:translateY(-24px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  filter:drop-shadow(0 4px 10px rgba(0,0,0,0.65));
+}
+.ganesh-top svg{width:100%;height:100%;object-fit:contain}
+.ganesh-top img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+
 .env{position:relative;width:min(86vw,380px);aspect-ratio:1.45/1;cursor:pointer;filter:drop-shadow(0 25px 35px rgba(0,0,0,.6));
   animation:float 3.5s ease-in-out infinite}
 @keyframes float{50%{transform:translateY(-8px)}}
@@ -57,7 +73,18 @@ body{font-family:'Montserrat',sans-serif;background:#2a0a12;color:var(--ivory);o
   display:flex;align-items:center;justify-content:center;font-family:'Cinzel',serif;font-weight:700;color:#5a0a14;font-size:clamp(.7rem,2.6vw,.95rem);
   border:2px dashed rgba(90,50,5,.6);transition:.5s}
 .env.open .seal{transform:translate(-50%,-50%) scale(0);opacity:0}
-.hello{font-family:'Cinzel',serif;color:var(--gold-l);letter-spacing:.35em;font-size:clamp(.8rem,3vw,1.05rem);margin-bottom:1.6rem;text-shadow:0 2px 8px rgba(0,0,0,.6)}
+
+/* Elevated Shubh Vivah text - Completely above the dome border */
+.hello{
+  font-family:'Cinzel',serif;
+  color:#e61937;
+  letter-spacing:.35em;
+  font-size:clamp(.8rem,3vw,1.05rem);
+  margin-bottom:clamp(2.6rem, 5.5vh, 3.6rem);
+  transform:translateY(-24px);
+  text-shadow:0 2px 8px rgba(0,0,0,.7);
+  font-weight:600;
+}
 .click{margin-top:2rem;font-family:'Cinzel',serif;letter-spacing:.3em;text-transform:uppercase;font-size:.85rem;color:var(--ivory);
   text-shadow:0 2px 8px rgba(0,0,0,.7);animation:pulse 1.8s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.45}}
@@ -195,7 +222,39 @@ body{font-family:'Montserrat',sans-serif;background:#2a0a12;color:var(--ivory);o
 
 <!-- ============ ENVELOPE ============ -->
 <section id="envelope-screen">
-  <p class="hello" style="color: red">|| शुभ विवाह ||</p>
+  <!-- Auspicious Red Ganesha Idol -->
+  <div class="ganesh-top">
+    <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="gRed" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff3b53"/>
+          <stop offset="50%" stop-color="#c91832"/>
+          <stop offset="100%" stop-color="#800a18"/>
+        </linearGradient>
+      </defs>
+      <!-- Mukut (Crown) -->
+      <path d="M45 12 L55 12 L57 23 L50 26 L43 23 Z" fill="url(#gRed)"/>
+      <path d="M50 4 L50 11" stroke="url(#gRed)" stroke-width="2.6" stroke-linecap="round"/>
+      <circle cx="50" cy="3.5" r="2" fill="url(#gRed)"/>
+      <!-- Tilak -->
+      <path d="M48.5 29 Q50 26 51.5 29 Q50 33 48.5 29 Z" fill="url(#gRed)"/>
+      <circle cx="50" cy="36" r="1.8" fill="url(#gRed)"/>
+      <!-- Left Ear Curve -->
+      <path d="M42 27 C28 29 18 38 18 51 C18 61 26 67 34 67 C36 67 38 66 40 64" stroke="url(#gRed)" stroke-width="4.2" stroke-linecap="round" fill="none"/>
+      <!-- Right Ear Curve -->
+      <path d="M58 27 C72 29 82 38 82 51 C82 61 74 67 66 67 C64 67 62 66 60 64" stroke="url(#gRed)" stroke-width="4.2" stroke-linecap="round" fill="none"/>
+      <!-- Head & Trunk Flow -->
+      <path d="M46 39 C46 54 48 65 52 74 C54 78 58 83 65 83 C71 83 75 78 73 73 C71 68 65 70 64 73" stroke="url(#gRed)" stroke-width="4.5" stroke-linecap="round" fill="none"/>
+      <!-- Dant (Tusk) -->
+      <path d="M43 50 L37 53" stroke="url(#gRed)" stroke-width="3" stroke-linecap="round"/>
+      <!-- Modak -->
+      <circle cx="73" cy="62" r="3.6" fill="url(#gRed)"/>
+    </svg>
+    <img src="images/ganesh.png" alt="" onerror="this.remove()">
+  </div>
+
+  <p class="hello">|| शुभ विवाह ||</p>
+
   <div class="env" id="env" onclick="openInvite()">
     <div class="body"><div class="left"></div><div class="right"></div><div class="bottom"></div></div>
     <div class="flap"></div>
