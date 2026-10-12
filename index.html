@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Sakshi & Karan | Wedding Invitation</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-deep-wine: #210105;
+      --card-maroon: #380309;
+      --card-maroon-dark: #270105;
+      --gold-gradient: linear-gradient(135deg, #fae298 0%, #c99c3d 50%, #8c6014 100%);
+      --gold-btn: linear-gradient(135deg, #d8ab4e 0%, #fae298 50%, #b8832a 100%);
+      --gold-text: #f5dc9a;
+      --gold-border: rgba(218, 171, 78, 0.45);
+      --font-serif: 'Cinzel', serif;
+      --font-script: 'Great Vibes', cursive;
+      --font-sans: 'Montserrat', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: radial-gradient(circle at center, #350208 0%, #170003 100%);
+      min-height: 100vh;
+      font-family: var(--font-sans);
+      color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Ambient Silk Texture Overlay */
+    .silk-texture {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(ellipse at 80% 20%, rgba(138, 18, 30, 0.3) 0%, transparent 60%),
+        radial-gradient(ellipse at 20% 80%, rgba(94, 6, 17, 0.4) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    /* Falling Petals Canvas */
+    #petals-canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 99;
+    }
+
+    /* ====================================================
+       1. ENVELOPE SCREEN
+    ==================================================== */
+    #envelope-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 50;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at center, #380208 0%, #150003 100%);
+      transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), transform 1.2s ease, visibility 1.2s;
+      padding: 1.5rem;
+    }
+
+    .envelope-screen-title {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      letter-spacing: 4px;
+      color: var(--gold-text);
+      margin-bottom: 2rem;
+      text-transform: uppercase;
+      opacity: 0.95;
+    }
+
+    .envelope-container {
+      position: relative;
+      width: 320px;
+      height: 230px;
+      cursor: pointer;
+      perspective: 1000px;
+    }
+
+    .envelope-box {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #46040b;
+      border-radius: 8px;
+      box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8), 0 0 25px rgba(218, 171, 78, 0.15);
+      border: 2px solid var(--gold-border);
+      overflow: visible;
+    }
+
+    /* Subtle Mandala Watermark in Envelope */
+    .envelope-box::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(circle, transparent 40%, rgba(20, 1, 3, 0.5) 100%),
+        repeating-radial-gradient(circle, rgba(218, 171, 78, 0.08) 0, rgba(218, 171, 78, 0.08) 2px, transparent 2px, transparent 18px);
+      border-radius: 6px;
+    }
+
+    /* Envelope Bottom & Side Folds */
+    .envelope-folds {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      border-bottom: 115px solid #3c0309;
+      border-left: 160px solid #320207;
+      border-right: 160px solid #320207;
+      border-top: 115px solid transparent;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    /* Gold Ornate Inner Border */
+    .envelope-inner-border {
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(218, 171, 78, 0.35);
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    /* Top Flap */
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      border-left: 160px solid transparent;
+      border-right: 160px solid transparent;
+      border-top: 120px solid #550710;
+      transform-origin: top;
+      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 3;
+    }
+
+    /* Floral Garland on Top of Flap */
+    .flap-garland {
+      position: absolute;
+      top: -115px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 170px;
+      height: 35px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .flower-dot {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .flower-marigold-y { background: radial-gradient(circle, #ffde43, #f39c12); }
+    .flower-marigold-o { background: radial-gradient(circle, #f39c12, #d35400); }
+    .flower-rose { background: radial-gradient(circle, #c0392b, #781017); width: 18px; height: 18px; }
+
+    /* Wax Seal */
+    .wax-seal {
+      position: absolute;
+      top: 85px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 64px;
+      height: 64px;
+      background: radial-gradient(circle at 35% 30%, #fae298, #c99c3d 60%, #7d530f 100%);
+      border-radius: 50%;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.7), inset 0 2px 4px rgba(255,255,255,0.6);
+      border: 2px dashed rgba(80, 48, 5, 0.7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 4;
+      cursor: pointer;
+      transition: transform 0.4s ease;
+    }
+
+    .wax-seal i {
+      font-size: 1.35rem;
+      color: #3b0308;
+      margin-top: 2px;
+    }
+
+    .wax-seal span {
+      font-family: var(--font-serif);
+      font-size: 0.62rem;
+      font-weight: 700;
+      color: #3b0308;
+      letter-spacing: 1px;
+    }
+
+    .envelope-container:hover .wax-seal {
+      transform: translateX(-50%) scale(1.08);
+    }
+
+    .open-prompt {
+      font-family: var(--font-serif);
+      margin-top: 2.5rem;
+      color: var(--gold-text);
+      font-size: 0.85rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      opacity: 0.85;
+      text-align: center;
+      animation: softGlow 2s infinite alternate;
+    }
+
+    @keyframes softGlow {
+      from { opacity: 0.6; }
+      to { opacity: 1; text-shadow: 0 0 10px rgba(245, 220, 154, 0.5); }
+    }
+
+    .envelope-container.opened .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+
+    .envelope-container.opened .wax-seal {
+      transform: translateX(-50%) scale(0);
+      opacity: 0;
+    }
+
+    /* ====================================================
+       2. INNER INVITATION CARD (Matches Image 3)
+    ==================================================== */
+    #invitation-wrapper {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      min-height: 94vh;
+      margin: 1.5rem auto;
+      z-index: 10;
+      display: none;
+      opacity: 0;
+      transform: scale(0.96) translateY(20px);
+      transition: opacity 1.2s ease, transform 1.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+      padding: 0 12px;
+    }
+
+    #invitation-wrapper.revealed {
+      display: block;
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .inner-card {
+      position: relative;
+      background: radial-gradient(circle at center top, #44040c 0%, #290106 75%, #1d0003 100%);
+      border-radius: 34px;
+      border: 3px solid rgba(218, 171, 78, 0.6);
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), 0 0 35px rgba(218, 171, 78, 0.15);
+      padding: 2.8rem 1.4rem 3.5rem;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    /* Ornate Gold Border lines */
+    .inner-card::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      border: 1px solid rgba(218, 171, 78, 0.45);
+      border-radius: 26px;
+      pointer-events: none;
+    }
+
+    /* Top Left & Right Marigold Torans */
+    .toran {
+      position: absolute;
+      top: 0;
+      display: flex;
+      gap: 5px;
+      z-index: 3;
+    }
+    .toran-left { left: 16px; }
+    .toran-right { right: 16px; }
+
+    .toran-string {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: center;
+    }
+
+    .toran-ball {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+    }
+    .toran-ball.y { background: radial-gradient(circle, #fde462, #f39c12); }
+    .toran-ball.o { background: radial-gradient(circle, #f39c12, #d35400); }
+    .toran-ball.r { background: radial-gradient(circle, #e74c3c, #8e1724); }
+
+    /* Golden Ganesha Emblem */
+    .ganesha-symbol {
+      width: 52px;
+      height: 52px;
+      margin: 0.5rem auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      background: var(--gold-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+
+    .invite-lead {
+      font-family: var(--font-serif);
+      font-size: 0.72rem;
+      letter-spacing: 3px;
+      color: var(--gold-text);
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      opacity: 0.95;
+    }
+
+    .invite-sublead {
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
+      color: #ead5b5;
+      text-transform: uppercase;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      opacity: 0.85;
+    }
+
+    /* Bride & Groom Calligraphy */
+    .names-section {
+      margin: 1rem 0;
+    }
+
+    .couple-name {
+      font-family: var(--font-script);
+      font-size: clamp(3.2rem, 9.5vw, 4.4rem);
+      color: #fae7ba;
+      line-height: 1.1;
+      text-shadow: 0 3px 12px rgba(0, 0, 0, 0.7);
+      font-weight: 500;
+    }
+
+    .ampersand {
+      font-family: var(--font-script);
+      font-size: 2.2rem;
+      color: var(--gold-text);
+      display: block;
+      margin: 0.1rem 0;
+    }
+
+    /* Date and Venue info */
+    .event-main-date {
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      letter-spacing: 1.8px;
+      font-weight: 700;
+      color: #fff;
+      margin-top: 1.4rem;
+    }
+
+    .event-main-time {
+      font-family: var(--font-sans);
+      font-size: 0.82rem;
+      letter-spacing: 1.5px;
+      font-weight: 600;
+      color: var(--gold-text);
+      margin-top: 0.3rem;
+      text-transform: uppercase;
+    }
+
+    /* Traditional Countdown Timer */
+    .countdown-title {
+      font-family: var(--font-serif);
+      font-size: 0.75rem;
+      letter-spacing: 2px;
+      color: #e5cb9b;
+      margin-top: 2rem;
+      margin-bottom: 0.7rem;
+    }
+
+    .countdown-pill-grid {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 2rem;
+    }
+
+    .time-pill-box {
+      border: 1px solid rgba(218, 171, 78, 0.55);
+      border-radius: 12px;
+      background: rgba(45, 2, 7, 0.6);
+      padding: 0.55rem 0.65rem;
+      min-width: 58px;
+      text-align: center;
+    }
+
+    .time-pill-box .num {
+      font-family: var(--font-serif);
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #fff;
+      display: block;
+      line-height: 1.1;
+    }
+
+    .time-pill-box .label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      color: #d1b88e;
+      letter-spacing: 1px;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .time-colon {
+      font-family: var(--font-serif);
+      font-size: 1.2rem;
+      color: var(--gold-text);
+      font-weight: bold;
+    }
+
+    /* Buttons (Matches Image 3) */
+    .buttons-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 320px;
+      margin: 0 auto;
+    }
+
+    .gold-pill-btn {
+      background: var(--gold-btn);
+      color: #3b0509;
+      font-family: var(--font-sans);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 0.85rem 1.4rem;
+      border-radius: 50px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      cursor: pointer;
+      border: none;
+    }
+
+    .gold-pill-btn small {
+      font-size: 0.7rem;
+      text-transform: capitalize;
+      font-weight: 500;
+      color: #4a0910;
+      margin-top: 1px;
+    }
+
+    .gold-pill-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(218, 171, 78, 0.4);
+    }
+
+    /* Itinerary Accordion / Drawer Trigger */
+    .view-itinerary-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      color: var(--gold-text);
+      font-size: 0.78rem;
+      letter-spacing: 1.5px;
+      text-decoration: none;
+      text-transform: uppercase;
+      border-bottom: 1px dashed var(--gold-text);
+      padding-bottom: 2px;
+      cursor: pointer;
+    }
+
+    /* Floating Music Button */
+    .music-floating-btn {
+      position: fixed;
+      bottom: 22px;
+      right: 22px;
+      z-index: 100;
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #4a040b;
+      border: 2px solid var(--gold-text);
+      color: var(--gold-text);
+      font-size: 1.15rem;
+      cursor: pointer;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+    }
+
+    /* ====================================================
+       3. MODAL FOR ITINERARY & RSVP CONTACT
+    ==================================================== */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 0, 3, 0.85);
+      z-index: 1000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-card {
+      background: #380309;
+      border: 2px solid var(--gold-text);
+      border-radius: 20px;
+      padding: 2rem 1.4rem;
+      width: 100%;
+      max-width: 380px;
+      text-align: center;
+      position: relative;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.8);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 12px;
+      right: 15px;
+      color: var(--gold-text);
+      font-size: 1.4rem;
+      cursor: pointer;
+    }
+
+    .modal-title {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      color: var(--gold-text);
+      margin-bottom: 1.2rem;
+    }
+
+    .modal-event-item {
+      border-bottom: 1px dashed rgba(218, 171, 78, 0.3);
+      padding: 0.8rem 0;
+      text-align: left;
+    }
+    .modal-event-item:last-child { border-bottom: none; }
+    .modal-event-item h4 { font-family: var(--font-serif); color: #fff; font-size: 0.95rem; }
+    .modal-event-item p { font-size: 0.8rem; color: #dac39e; margin-top: 2px; }
+  </style>
+</head>
+<body>
+
+  <div class="silk-texture"></div>
+  <canvas id="petals-canvas"></canvas>
+
+  <!-- Background Instrumental Audio -->
+  <audio id="soundtrack" loop preload="auto" src="wedding-theme.mp3"></audio>
+
+  <!-- Floating Music Toggle -->
+  <button class="music-floating-btn" id="musicBtn" onclick="toggleSoundtrack()" aria-label="Toggle Soundtrack">
+    <i class="fa-solid fa-music"></i>
+  </button>
+
+  <!-- ====================================================
+       1. ENVELOPE SCREEN (Matches Left Screen in Image 3)
+  ==================================================== -->
+  <section id="envelope-screen">
+    <h2 class="envelope-screen-title">|| शुभ विवाह ||</h2>
+
+    <div class="envelope-container" id="envelopeWrapper" onclick="openEnvelopeInvitation()">
+      <div class="envelope-box">
+        <div class="envelope-inner-border"></div>
+        <div class="envelope-folds"></div>
+
+        <!-- Top Flap -->
+        <div class="envelope-flap">
+          <div class="flap-garland">
+            <span class="flower-dot flower-marigold-y"></span>
+            <span class="flower-dot flower-marigold-o"></span>
+            <span class="flower-dot flower-rose"></span>
+            <span class="flower-dot flower-marigold-o"></span>
+            <span class="flower-dot flower-marigold-y"></span>
+          </div>
+        </div>
+
+        <!-- Wax Seal (Click trigger) -->
+        <div class="wax-seal">
+          <i class="fa-solid fa-om"></i>
+          <span>S &amp; K</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="open-prompt">Tap to Open</p>
+  </section>
+
+  <!-- ====================================================
+       2. INNER INVITATION CARD (Matches Right Screen in Image 3)
+  ==================================================== -->
+  <div id="invitation-wrapper">
+    <main class="inner-card">
+
+      <!-- Hanging Marigold Torans (Left & Right) -->
+      <div class="toran toran-left">
+        <div class="toran-string">
+          <span class="toran-ball y"></span>
+          <span class="toran-ball o"></span>
+          <span class="toran-ball y"></span>
+          <span class="toran-ball o"></span>
+          <span class="toran-ball r"></span>
+        </div>
+        <div class="toran-string" style="margin-top: 8px;">
+          <span class="toran-ball y"></span>
+          <span class="toran-ball o"></span>
+          <span class="toran-ball y"></span>
+          <span class="toran-ball r"></span>
+        </div>
+      </div>
+
+      <div class="toran toran-right">
+        <div class="toran-string" style="margin-top: 8px;">
+          <span class="toran-ball y"></span>
+          <span class="toran-ball o"></span>
+          <span class="toran-ball y"></span>
+          <span class="toran-ball r"></span>
+        </div>
+        <div class="toran-string">
+          <span class="toran-ball y"></span>
+          <span class="toran-ball o"></span>
+          <span class="toran-ball y"></span>
+          <span class="toran-ball o"></span>
+          <span class="toran-ball r"></span>
+        </div>
+      </div>
+
+      <!-- Golden Ganesha Motif -->
+      <div class="ganesha-symbol">
+        <i class="fa-solid fa-om"></i>
+      </div>
+
+      <p class="invite-lead">We Invite You To</p>
+      <p class="invite-sublead">The Wedding Of</p>
+
+      <!-- Couple Names in Elegant Calligraphy -->
+      <div class="names-section">
+        <h1 class="couple-name">Sakshi</h1>
+        <span class="ampersand">&amp;</span>
+        <h1 class="couple-name">Karan</h1>
+      </div>
+
+      <!-- Date & Venue -->
+      <p class="event-main-date">SATURDAY, 05TH DECEMBER 2026,</p>
+      <p class="event-main-time">07:00 PM • UTTRAKHAND BHAWAN</p>
+
+      <!-- Traditional Countdown Timer -->
+      <p class="countdown-title">Traditional Countdown Timer</p>
+      <div class="countdown-pill-grid">
+        <div class="time-pill-box">
+          <span class="num" id="d-val">00</span>
+          <span class="label">Days</span>
+        </div>
+        <span class="time-colon">:</span>
+        <div class="time-pill-box">
+          <span class="num" id="h-val">00</span>
+          <span class="label">Hours</span>
+        </div>
+        <span class="time-colon">:</span>
+        <div class="time-pill-box">
+          <span class="num" id="m-val">00</span>
+          <span class="label">Minutes</span>
+        </div>
+        <span class="time-colon">:</span>
+        <div class="time-pill-box">
+          <span class="num" id="s-val">00</span>
+          <span class="label">Seconds</span>
+        </div>
+      </div>
+
+      <!-- Gold Gradient Pill Action Buttons -->
+      <div class="buttons-container">
+        <a class="gold-pill-btn" href="https://www.google.com/maps/search/?api=1&query=Uttrakhand+Bhawan" target="_blank">
+          Locate Venue
+          <small>(Uttrakhand Bhawan)</small>
+        </a>
+
+        <button class="gold-pill-btn" onclick="openRSVPModal()">
+          RSVP
+        </button>
+      </div>
+
+      <!-- Link to View Detailed Functions (Mehendi, Haldi, Sangeet) -->
+      <a class="view-itinerary-link" onclick="openEventsModal()">View Event Itinerary &amp; Details</a>
+    </main>
+  </div>
+
+  <!-- ====================================================
+       3. ITINERARY & RSVP MODALS
+  ==================================================== -->
+  <!-- Events Itinerary Modal -->
+  <div class="modal-overlay" id="eventsModal" onclick="closeModals(event)">
+    <div class="modal-card">
+      <span class="modal-close" onclick="closeAllModals()">&times;</span>
+      <h3 class="modal-title">Wedding Events</h3>
+
+      <div class="modal-event-item">
+        <h4>Mehendi</h4>
+        <p>📍 Residence | Celebrations Commence</p>
+      </div>
+      <div class="modal-event-item">
+        <h4>Haldi Ceremony</h4>
+        <p>📍 Uttrakhand Bhawan | Auspicious Morning</p>
+      </div>
+      <div class="modal-event-item">
+        <h4>Sangeet Night</h4>
+        <p>📍 Uttrakhand Bhawan | Music &amp; Dance</p>
+      </div>
+      <div class="modal-event-item">
+        <h4>Wedding Ceremony (Pheras)</h4>
+        <p>📍 Uttrakhand Bhawan | 05 Dec 2026 • 07:00 PM</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- RSVP Modal -->
+  <div class="modal-overlay" id="rsvpModal" onclick="closeModals(event)">
+    <div class="modal-card">
+      <span class="modal-close" onclick="closeAllModals()">&times;</span>
+      <h3 class="modal-title">RSVP</h3>
+      <p style="font-size: 0.9rem; color: #dac39e; margin-bottom: 0.5rem;">Warm regards from family:</p>
+      <h4 style="font-family: var(--font-serif); font-size: 1.25rem; color: #fff; margin-bottom: 1.5rem;">Uma Shankar Sanghai</h4>
+
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <a class="gold-pill-btn" href="tel:+919415075963" style="text-decoration:none;">
+          <i class="fa-solid fa-phone" style="margin-right: 6px;"></i> Call +91 9415075963
+        </a>
+        <a class="gold-pill-btn" href="https://wa.me/919415075963?text=Namaste!%20Confirming%20our%20attendance%20for%20Sakshi%20and%20Karan's%20Wedding." target="_blank" style="text-decoration:none;">
+          <i class="fa-brands fa-whatsapp" style="margin-right: 6px;"></i> WhatsApp Message
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================
+       4. JAVASCRIPT
+  ==================================================== -->
+  <script>
+    // 1. Envelope Opening & Music playback
+    function openEnvelopeInvitation() {
+      const envelope = document.getElementById('envelopeWrapper');
+      const screen = document.getElementById('envelope-screen');
+      const innerCard = document.getElementById('invitation-wrapper');
+      const musicBtn = document.getElementById('musicBtn');
+      const audio = document.getElementById('soundtrack');
+
+      envelope.classList.add('opened');
+
+      // Start the wedding background song
+      audio.play().catch(err => console.log("Audio play allowed on user tap: ", err));
+
+      // Launch falling rose & marigold petals
+      startFallingPetals();
+
+      setTimeout(() => {
+        screen.style.opacity = '0';
+        screen.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+          screen.style.display = 'none';
+          innerCard.classList.add('revealed');
+          musicBtn.style.display = 'flex';
+        }, 900);
+      }, 900);
+    }
+
+    // 2. Music Toggle
+    const audio = document.getElementById('soundtrack');
+    const musicBtn = document.getElementById('musicBtn');
+    function toggleSoundtrack() {
+      if (audio.paused) {
+        audio.play();
+        musicBtn.innerHTML = '<i class="fa-solid fa-music"></i>';
+      } else {
+        audio.pause();
+        musicBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+      }
+    }
+
+    // 3. Countdown Timer (05 Dec 2026 19:00 IST)
+    const weddingDate = new Date('2026-12-05T19:00:00+05:30').getTime();
+    function updateCountdown() {
+      const now = new Date().getTime();
+      const distance = weddingDate - now;
+
+      if (distance > 0) {
+        const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById('d-val').innerText = String(d).padStart(2, '0');
+        document.getElementById('h-val').innerText = String(h).padStart(2, '0');
+        document.getElementById('m-val').innerText = String(m).padStart(2, '0');
+        document.getElementById('s-val').innerText = String(s).padStart(2, '0');
+      }
+    }
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+
+    // 4. Modal Controls
+    function openEventsModal() {
+      document.getElementById('eventsModal').style.display = 'flex';
+    }
+    function openRSVPModal() {
+      document.getElementById('rsvpModal').style.display = 'flex';
+    }
+    function closeAllModals() {
+      document.getElementById('eventsModal').style.display = 'none';
+      document.getElementById('rsvpModal').style.display = 'none';
+    }
+    function closeModals(e) {
+      if (e.target.classList.contains('modal-overlay')) {
+        closeAllModals();
+      }
+    }
+
+    // 5. Falling Flowers Canvas Animation (Rose petals + Marigold)
+    function startFallingPetals() {
+      const canvas = document.getElementById('petals-canvas');
+      const ctx = canvas.getContext('2d');
+
+      function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
+      window.addEventListener('resize', resize);
+      resize();
+
+      const petals = [];
+      const total = 38;
+      const palette = [
+        { outer: '#e67e22', inner: '#f39c12' }, // Marigold orange
+        { outer: '#f1c40f', inner: '#f39c12' }, // Marigold yellow
+        { outer: '#96111f', inner: '#5c030d' }  // Rose crimson
+      ];
+
+      for (let i = 0; i < total; i++) {
+        petals.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * -canvas.height,
+          size: Math.random() * 8 + 5,
+          speedY: Math.random() * 1.6 + 0.8,
+          speedX: Math.random() * 1 - 0.5,
+          angle: Math.random() * 360,
+          spin: Math.random() * 2 - 1,
+          color: palette[Math.floor(Math.random() * palette.length)]
+        });
+      }
+
+      function render() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        for (let p of petals) {
+          p.y += p.speedY;
+          p.x += p.speedX;
+          p.angle += p.spin;
+
+          ctx.save();
+          ctx.translate(p.x, p.y);
+          ctx.rotate((p.angle * Math.PI) / 180);
+
+          ctx.fillStyle = p.color.outer;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, p.size, p.size * 0.65, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = p.color.inner;
+          ctx.beginPath();
+          ctx.ellipse(0, 0, p.size * 0.5, p.size * 0.35, 0, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.restore();
+
+          if (p.y > canvas.height + 20) {
+            p.y = -20;
+            p.x = Math.random() * canvas.width;
+          }
+        }
+        requestAnimationFrame(render);
+      }
+      render();
+    }
+  </script>
+</body>
+</html>
